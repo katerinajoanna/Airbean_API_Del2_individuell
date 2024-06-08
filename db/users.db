@@ -1,2 +1,3 @@
 {"userId":"f4c78f84-5875-4a45-a17a-80de15206b76","username":"Jonas","password":"jonas123","createdAt":{"$$date":1717181953311},"_id":"gIODFFidusg3a4mM"}
-{"_id":"userIdCounter","value":1}
+{"userId":"6f10f19b-7e39-4626-bff2-e0b8582414f2","username":"testuser","password":"testpassword","createdAt":{"$$date":1717758342255},"_id":"i95geGDwbla3pIcf"}
+{"_id":"userIdCounter","value":2}
