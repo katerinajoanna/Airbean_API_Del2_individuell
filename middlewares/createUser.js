@@ -12,7 +12,7 @@ const createUser = (req, res, next) => {
         const newUserId = counter ? counter.value + 1 : 1;
 
         const newUser = {
-            userId: uuidv4(), 
+            userId: uuidv4(),
             username,
             password,
             createdAt: new Date()
@@ -23,7 +23,7 @@ const createUser = (req, res, next) => {
                 return res.status(500).json({ error: 'Det gick inte att skapa användare' });
             }
 
-           
+
             db.update({ _id: 'userIdCounter' }, { $set: { value: newUserId } }, { upsert: true }, (err) => {
                 if (err) {
                     console.error('Det gick inte att uppdatera userId counter');

@@ -13,7 +13,7 @@ export function addToCart(product, callback) {
 }
 
 router.post('/menu', (req, res, next) => {
-    const menu = req.body;  
+    const menu = req.body;
     insertMenu(menu, (err, newDoc) => {
         if (err) {
             return next(err);
@@ -87,16 +87,16 @@ router.post('/orders', (req, res, next) => {
 
         const totalAmount = orderItems.reduce((total, item) => total + item.price, 0);
 
-       
+
         const processingTime = new Date();
         processingTime.setMinutes(processingTime.getMinutes() + 15);
 
-        
+
         const order = {
             userId: req.body.userId || 'guest',
             items: orderItems,
             totalAmount: totalAmount,
-            status: 'Levereras ' + processingTime.toLocaleTimeString(), 
+            status: 'Levereras ' + processingTime.toLocaleTimeString(),
             createdAt: new Date()
         };
 

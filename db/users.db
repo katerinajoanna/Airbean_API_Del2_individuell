@@ -1,3 +1,6 @@
+{"userId":"8ef98723-b1cd-4518-b3fa-b8ddc490df25","username":"Katerina","password":"testpassword","createdAt":{"$$date":1717935258240},"_id":"J3WtyF3uWuWyXcId"}
+{"userId":"81b6f2a7-ae27-4fd7-8d98-ce9ccc7c5515","username":"Katerina2","password":"TeStpassword123","createdAt":{"$$date":1717935335611},"_id":"cRzHx2PghJfkgXu1"}
 {"userId":"f4c78f84-5875-4a45-a17a-80de15206b76","username":"Jonas","password":"jonas123","createdAt":{"$$date":1717181953311},"_id":"gIODFFidusg3a4mM"}
 {"userId":"6f10f19b-7e39-4626-bff2-e0b8582414f2","username":"testuser","password":"testpassword","createdAt":{"$$date":1717758342255},"_id":"i95geGDwbla3pIcf"}
-{"_id":"userIdCounter","value":2}
+{"_id":"userIdCounter","value":4}
+{"adminId":"f57c14cc-3307-4c63-8d77-fe32a9ed5d97","adminname":"Katerina","password":"987654","role":"admin","createdAt":{"$$date":1718123432077},"_id":"371uuAhZfYxW7BvW"}
