@@ -19,8 +19,8 @@ export const createAdmin = (req, res) => {
 
     db.insert(newAdmin, (err, admin) => {
         if (err) {
-            return res.status(500).json({ error: 'Failed to create admin' });
+            return res.status(500).json({ error: 'Det gick inte att skapa admin' });
         }
-        res.status(201).json({ message: 'Admin created successfully', admin });
+        res.status(201).json({ message: 'Administratören har skapats', admin });
     });
 };

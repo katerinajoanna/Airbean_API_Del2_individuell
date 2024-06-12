@@ -1,33 +1,158 @@
+
+
+import express from 'express';
 import Datastore from 'nedb';
+import Joi from 'joi';
+import verifyAdmin from '../middlewares/verifyAdmin.js';
 
 const dbMenu = new Datastore({ filename: './db/dbmenu.db', autoload: true });
+const dbSpecialOffers = new Datastore({ filename: './db/specialOffers.db', autoload: true });
+
+const router = express.Router();
 
 // Funktion för att infoga menyer i databasen
-export function insertMenu(callback) {
-    dbMenu.insert(menu, callback);
-}
+const insertMenu = (callback) => {
+    dbMenu.count({}, (err, count) => {
+        if (err) {
+            console.error('Fel:', err);
+            callback(err);
+            return;
+        }
+        if (count === 0) {
+            dbMenu.insert(menu, (err, newDocs) => {
+                if (err) {
+                    console.error('Det gick inte att lägga till i menyn:', err);
+                    callback(err);
+                    return;
+                }
+                console.log('Meny tillagd:', newDocs);
+                callback(null);
+            });
+        } else {
+            callback(null);
+        }
+    });
+};
+//const router = express.Router();
 
-/*
-// Funktion för att lägga till ett nytt objekt till menyn
-export function addToMenu(newMenuItem, callback) {
-    dbMenu.insert(newMenuItem, callback);
-}
+const productSchema = Joi.object({
+    id: Joi.number().required(),
+    title: Joi.string().required(),
+    desc: Joi.string().required(),
+    price: Joi.number().required(),
+    about: Joi.string().required()
+});
 
-// Funktion för att hämta alla objekt från menyn
-export function getMenu(callback) {
-    dbMenu.find({}, callback);
-}
+const specialOfferSchema = Joi.object({
+    products: Joi.array().items(Joi.string()).required(),
+    price: Joi.number().required()
+});
 
-// Funktion för att uppdatera ett befintligt objekt i menyn
-export function updateMenuItem(itemId, updatedFields, callback) {
-    dbMenu.update({ _id: itemId }, { $set: updatedFields }, {}, callback);
-}
+router.post('/add-product', verifyAdmin, (req, res) => {
+    const { id, title, desc, price, about } = req.body;
+    const productData = { id, title, desc, price, about };
 
-// Funktion för att uppdatera ett befintligt objekt i menyn
-export function deleteMenuItem(itemId, callback) {
-    dbMenu.remove({ _id: itemId }, {}, callback);
-}
-*/
+    const { error } = productSchema.validate(productData);
+    if (error) {
+        return res.status(400).json({ message: 'Felaktig input', details: error.details });
+    }
+
+    const newMenuItem = { ...productData, createdAt: new Date() };
+
+    dbMenu.insert(newMenuItem, (err, newDoc) => {
+        if (err) {
+            return res.status(500).json({ message: 'Det gick inte att lägga till produkt', error: err });
+        }
+        res.status(201).json({ message: 'Produkten har lagts till', product: newDoc });
+    });
+});
+
+router.post('/add-specialOffer', verifyAdmin, (req, res) => {
+    const { products, price } = req.body;
+    const specialOfferData = { products, price };
+
+    const { error } = specialOfferSchema.validate(specialOfferData);
+    if (error) {
+        return res.status(400).json({ message: 'Felaktig input', details: error.details });
+    }
+
+    dbMenu.find({ title: { $in: products } }, (err, foundProducts) => {
+        if (err) {
+            return res.status(500).json({ message: 'Det gick inte att hämta produkter', error: err });
+        }
+
+        const foundProductTitles = foundProducts.map(product => product.title);
+        const missingProducts = products.filter(product => !foundProductTitles.includes(product));
+
+        if (missingProducts.length > 0) {
+            const newProducts = missingProducts.map(title => ({ title }));
+            dbMenu.insert(newProducts, (err, newDocs) => {
+                if (err) {
+                    return res.status(500).json({ message: 'Det gick inte att lägga till nya produkter', error: err });
+                }
+
+                const allProducts = foundProducts.concat(newDocs);
+                createCampaign(allProducts, price, res);
+            });
+        } else {
+            createCampaign(foundProducts, price, res);
+        }
+    });
+});
+
+const createCampaign = (products, price, res) => {
+    const campaignProducts = products.map(product => ({
+        id: product.id,
+        title: product.title,
+    }));
+
+    const newCampaign = { products: campaignProducts, price, createdAt: new Date() };
+
+    dbSpecialOffers.insert(newCampaign, (err, newDoc) => {
+        if (err) {
+            return res.status(500).json({ message: 'Det gick inte att lägga till kampanj', error: err });
+        }
+        res.status(201).json({ message: 'Kampanjer har lagts till', campaign: newDoc });
+    });
+};
+
+router.put('/update-product/:id', verifyAdmin, (req, res) => {
+    const { id, title, desc, price, about } = req.body;
+    const productData = { id, title, desc, price, about };
+
+    const { error } = productSchema.validate(productData);
+    if (error) {
+        return res.status(400).json({ message: 'Felaktig input', details: error.details });
+    }
+
+    const itemId = parseInt(req.params.id);
+    const updatedFields = { ...productData, modifiedAt: new Date() };
+
+    dbMenu.update({ id: itemId }, { $set: updatedFields }, {}, (err, numReplaced) => {
+        if (err) {
+            return res.status(500).json({ message: 'Fel vid ändring av produkt', error: err });
+        }
+
+        if (numReplaced === 0) {
+            return res.status(404).json({ message: 'Produkten finns inte' });
+        }
+
+        res.status(200).json({ message: 'Produkt är modifierad', updatedFields });
+    });
+});
+
+router.delete('/delete-product/:id', verifyAdmin, (req, res) => {
+    const itemId = parseInt(req.params.id);
+    dbMenu.remove({ id: itemId }, {}, (err, numRemoved) => {
+        if (err) {
+            return res.status(500).json({ message: 'Det gick inte att ta bort produkten', error: err });
+        }
+        if (numRemoved === 0) {
+            return res.status(404).json({ message: 'Produkten hittades inte' });
+        }
+        res.status(200).json({ message: 'Produkten raderad' });
+    });
+});
 
 const menu = [
     {
@@ -74,3 +199,4 @@ const menu = [
     }
 ]
 
+export { router as default, insertMenu };
