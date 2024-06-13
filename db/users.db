@@ -1,7 +1,10 @@
 {"adminId":"f57c14cc-3307-4c63-8d77-fe32a9ed5d97","adminname":"Katerina","password":"987654","role":"admin","createdAt":{"$$date":1718123432077},"_id":"371uuAhZfYxW7BvW"}
+{"adminId":"29a2c2ef-1a4b-4c98-96e6-9416d6dd1eca","adminname":"Henryk","password":"741","role":"admin","createdAt":{"$$date":1718279915221},"_id":"6sFeC8J7voaaqYfg"}
+{"adminId":"70072bd4-0477-4a75-b397-dd59a82fd4d9","adminname":"Henryk","password":"741","role":"admin","createdAt":{"$$date":1718279199110},"_id":"9x49PXcd0vgroxlY"}
 {"userId":"8ef98723-b1cd-4518-b3fa-b8ddc490df25","username":"Katerina","password":"testpassword","createdAt":{"$$date":1717935258240},"_id":"J3WtyF3uWuWyXcId"}
 {"adminId":"c959c2c3-1c26-41c2-9fdb-a054bd81c393","adminname":"Jonas","password":"JONAS","role":"admin","createdAt":{"$$date":1718123988674},"_id":"NgTEOTymjTtu9t89"}
+{"userId":"e3464b23-16e1-49d2-9ff1-c7f4ea57f27d","username":"Gregor","password":"WWWSSSppp","createdAt":{"$$date":1718263534721},"_id":"V95x0oLxBc89pUzn"}
 {"userId":"81b6f2a7-ae27-4fd7-8d98-ce9ccc7c5515","username":"Katerina2","password":"TeStpassword123","createdAt":{"$$date":1717935335611},"_id":"cRzHx2PghJfkgXu1"}
 {"userId":"f4c78f84-5875-4a45-a17a-80de15206b76","username":"Jonas","password":"jonas123","createdAt":{"$$date":1717181953311},"_id":"gIODFFidusg3a4mM"}
 {"userId":"6f10f19b-7e39-4626-bff2-e0b8582414f2","username":"testuser","password":"testpassword","createdAt":{"$$date":1717758342255},"_id":"i95geGDwbla3pIcf"}
-{"_id":"userIdCounter","value":4}
+{"_id":"userIdCounter","value":5}

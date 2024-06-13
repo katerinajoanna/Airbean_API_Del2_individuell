@@ -1,0 +1,3 @@
+{"products":[{"id":6,"title":"Korn kaffe"},{"id":6,"title":"Korn kaffe"},{"title":"Två kanelbulle"}],"price":69,"createdAt":{"$$date":1718303352627},"_id":"6WVpKmyADzCj5zyp"}
+{"products":[{"id":2,"title":"Caffè Doppio"},{"id":5,"title":"Kaffe Latte"},{"title":"Två chokladkakor"}],"price":69,"createdAt":{"$$date":1718302869797},"_id":"ECuiHRWKN7u5sblC"}
+{"products":[{"title":"Två kanelbulle"},{"id":6,"title":"Korn kaffe"},{"id":6,"title":"Korn kaffe"}],"price":59,"createdAt":{"$$date":1718303387717},"_id":"zg7HPmPey0LAaD15"}
